@@ -34,45 +34,66 @@ export class Visual implements IVisual {
     const columns = table.columns;
 
     // Find indices based on roles
-    const indexIndex = columns.findIndex(col => col.roles["index"]);
-    const nameIndex = columns.findIndex(col => col.roles["name"]);
-    const designationIndex = columns.findIndex(col => col.roles["designation"]);
-    const imageIndex = columns.findIndex(col => col.roles["imageBase64"]);
-    const managerIndexIndex = columns.findIndex(col => col.roles["managerIndex"]);
+    const indexIndex = columns.findIndex((col) => col.roles["index"]);
+    const nameIndex = columns.findIndex((col) => col.roles["name"]);
+    const gradeIndex = columns.findIndex((col) => col.roles["grade"]);
+    // const gradeIndex = columns.findIndex((col) => col.roles["grade"]);
+    const designationIndex = columns.findIndex(
+      (col) => col.roles["designation"]
+    );
+    const imageIndex = columns.findIndex((col) => col.roles["imageBase64"]);
+    const managerIndexIndex = columns.findIndex(
+      (col) => col.roles["managerIndex"]
+    );
 
-    if (indexIndex === -1 || nameIndex === -1 || designationIndex === -1 || imageIndex === -1) {
-      console.error("Required columns (name, designation, imageBase64) are missing.");
+    if (
+      indexIndex === -1 ||
+      nameIndex === -1 ||
+      designationIndex === -1 ||
+      imageIndex === -1
+    ) {
+      console.error(
+        "Required columns (name, designation, imageBase64) are missing."
+      );
       return;
     }
 
     // Create a mapping from index to name for manager lookup
     const indexToNameMap: { [key: number]: string } = {};
-    table.rows.forEach(row => {
-      const indexValue = indexIndex !== -1 ? (row[indexIndex] as number) : undefined;
+    table.rows.forEach((row) => {
+      const indexValue =
+        indexIndex !== -1 ? (row[indexIndex] as number) : undefined;
       const nameValue = row[nameIndex] as string;
       if (indexValue !== undefined) {
         indexToNameMap[indexValue] = nameValue;
       }
     });
 
-    const data: Employee[] = table.rows.map(row => {
-      const indexValueRaw = indexIndex !== -1 ? row[indexIndex] : undefined;
-      const indexValue = parseInt(indexValueRaw as string);
-      const nameValue = row[nameIndex] as string;
-      const designationValue = row[designationIndex] as string;
-      const imageValue = row[imageIndex] as string;
-      const managerIndexValueRaw = managerIndexIndex !== -1 ? row[managerIndexIndex] : undefined;
-      const managerIndexValue = managerIndexValueRaw !== undefined ? parseInt(managerIndexValueRaw as string) : undefined;
+    const data: Employee[] = table.rows
+      .map((row) => {
+        const indexValueRaw = indexIndex !== -1 ? row[indexIndex] : undefined;
+        const indexValue = parseInt(indexValueRaw as string);
+        const nameValue = row[nameIndex] as string;
+        const gradeValue = row[gradeIndex] as string;
+        const designationValue = row[designationIndex] as string;
+        const imageValue = row[imageIndex] as string;
+        const managerIndexValueRaw =
+          managerIndexIndex !== -1 ? row[managerIndexIndex] : undefined;
+        const managerIndexValue =
+          managerIndexValueRaw !== undefined
+            ? parseInt(managerIndexValueRaw as string)
+            : undefined;
 
-      
-      return {
-        index: indexValue,
-        name: nameValue, // This may be null
-        designation: designationValue,
-        imageBase64: imageValue,
-        managerIndex: managerIndexValue, // Correct property name
-      };
-    }).filter(emp => emp.index !== undefined)
+        return {
+          index: indexValue,
+          name: nameValue, // This may be null
+          grade: gradeValue,
+          designation: designationValue,
+          imageBase64: imageValue,
+          managerIndex: managerIndexValue, // Correct property name
+        };
+      })
+      .filter((emp) => emp.index !== undefined);
 
     // Log the data for debugging
     console.log("Employee Data:", data);

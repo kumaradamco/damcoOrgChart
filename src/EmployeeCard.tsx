@@ -19,12 +19,20 @@ const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(
       >
         {!isVacant ? (
           <div className="card-content">
-            <img
-              className="employee-photo"
-              src={employee.imageBase64}
-            />
+            <img className="employee-photo" src={employee.imageBase64} />
             <div className="employee-name-label">الاسم:</div>
             <div className="employee-name">{employee.name}</div>
+            <div className="employee-name">{employee.designation}</div>
+            <div className="employee-grade-label">Grasde:</div>
+            <div className="employee-grade">{employee.grade}</div>
+            <div className="employee-grade-label">Employee Number:</div>
+            <div className="employee-grade">{employee.employeeNumber}</div>
+            <div className="employee-grade-label">Experience:</div>
+            <div className="employee-grade">{employee.experience}</div>
+            <div className="employee-grade-label"> University/College:</div>
+            <div className="employee-grade">{employee.university}</div>
+            <div className="employee-grade-label">Qualification:</div>
+            <div className="employee-grade">{employee.qualification}</div>
             <div className="employee-designation">
               {employee.designation || "No Designation"}
             </div>
